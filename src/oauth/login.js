@@ -48,40 +48,13 @@ module.exports.execute = () => {
 		return true;
 	}
 
-	server.start();
-
 	server.once('error', err => {
 		console.error(`An error ocurred: ${err}`);
 		server.stop();
 		process.exit(1);
 	});
 
-	server.once('code-fetched', async ({ code, state: authState }) => {
-
-		if(authState !== state)
-			throw new Error('Wrong auth state');
-
-		try {
-
-			const tokens = await getTokens(code, verifier);
-
-			const tokenData = jwt.decode(tokens.id_token);
-
-			credentials.idToken = tokens.id_token;
-			credentials.accessToken = tokens.access_token;
-			credentials.refreshToken = tokens.refresh_token;
-
-			console.log(`Welcome ${tokenData.given_name || tokenData.name}!`);
-
-			server.close();
-
-		} catch(err) {
-			console.error(`An error ocurred: ${err}`);
-			server.stop();
-			process.exit(1);
-		}
-
-	});
+	server.start(state, verifier, credentials);
 
 	console.log(`Your browser should be opened automatically. If not, browse to this URL manually: ${loginUrl}`);
 	console.log();
