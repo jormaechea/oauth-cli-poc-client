@@ -3,7 +3,7 @@
 const Preferences = require('preferences');
 
 const credentials = new Preferences('oauth-cli-poc.credentials', {}, {
-	encrypt: false,
+	encrypt: true,
 	format: 'json'
 });
 
