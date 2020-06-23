@@ -10,8 +10,7 @@ const server = require('./server');
 const {
 	getState,
 	getChallenge,
-	getVerifier,
-	getTokens
+	getVerifier
 } = require('./helpers');
 
 const isLoggedIn = () => !!(credentials.accessToken && credentials.refreshToken && credentials.idToken);

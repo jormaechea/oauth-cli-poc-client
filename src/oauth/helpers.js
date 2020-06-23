@@ -49,3 +49,29 @@ module.exports.getTokens = (code, verifier) => {
 
 	});
 };
+
+module.exports.refreshTokens = refreshToken => {
+	return new Promise((resolve, reject) => {
+
+		const options = {
+			method: 'POST',
+			url: `https://${oauthEndpoint}/oauth/token`,
+			headers: {
+				'content-type': 'application/x-www-form-urlencoded'
+			},
+			form: {
+				grant_type: 'refresh_token',
+				client_id: clientId,
+				refresh_token: refreshToken
+			}
+		};
+
+		request(options, (error, response, body) => {
+			if(error)
+				return reject(error);
+
+			resolve(JSON.parse(body));
+		});
+
+	});
+};
